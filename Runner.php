@@ -10,8 +10,11 @@ sleep(1);
 
 $instance2 = Singleton::getInstance();
 
-echo 'Both instances are ' . (($instance1 !== $instance1) ? 'not ' : '') . 'identical.' . chr(10);
-echo 'Both instances have ' . (($instance1->getId() !== $instance1->getId()) ? 'not ' : '') . 'the same ID.' . chr(10);
+$instancesAreIdentical = $instance1 === $instance2;
+$idsAreIdentical = $instance1->getId() === $instance2->getId();
+
+echo 'Both instances are ' . (!$instancesAreIdentical ? 'not ' : '') . 'identical.' . chr(10);
+echo 'Both instances have ' . (!$idsAreIdentical ? 'not ' : '') . 'the same ID.' . chr(10);
 
 $id = $instance1->getId();
 $data = Singleton::getStaticData();
@@ -26,5 +29,13 @@ sleep(1);
 echo 'Creating a new instance (even with a new name).' . chr(10);
 
 $instance3 = Singleton::getInstance();
-echo 'The new instances has ' . (($instance3->getId() !== $id) ? 'not ' : '') . 'the same ID as the first one.' . chr(10);
-echo 'The static data is ' . ((Singleton::getStaticData() !== $data) ? 'not ' : '') . 'the same as before the unset.' . chr(10);
+
+$thirdIdIsIdentical = $instance3->getId() === $id;
+$staticDataIsIdentical = Singleton::getStaticData() === $data;
+
+echo 'The new instances has ' . (!$thirdIdIsIdentical ? 'not ' : '') . 'the same ID as the first one.' . chr(10);
+echo 'The static data is ' . (!$staticDataIsIdentical ? 'not ' : '') . 'the same as before the unset.' . chr(10);
+
+$allIsIdentical = $instancesAreIdentical && $idsAreIdentical && $thirdIdIsIdentical && $staticDataIsIdentical;
+
+exit($allIsIdentical ? 0 : 1);
