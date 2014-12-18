@@ -1,6 +1,9 @@
 <?php
 require_once 'Singleton.php';
 
+echo 'Enabling garbage collection.' . chr(10);
+gc_enable();
+
 echo 'Creating two instances via getInstance.' . chr(10);
 
 $instance1 = Singleton::getInstance();
@@ -20,8 +23,10 @@ $id = $instance1->getId();
 $data = Singleton::getStaticData();
 
 echo 'Unsetting both instances.' . chr(10);
-
 unset($instance1, $instance2);
+
+echo 'Triggering the garbage collection.' . chr(10);
+gc_collect_cycles();
 
 echo chr(10) . 'Sleeping for one second.' . chr(10) . chr(10);
 sleep(1);
