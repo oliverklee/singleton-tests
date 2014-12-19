@@ -39,6 +39,15 @@ class Singleton {
 	}
 
 	/**
+	 * Drops the static instance.
+	 *
+	 * @return void
+	 */
+	public static function dropInstance() {
+		self::$instance = NULL;
+	}
+
+	/**
 	 * @return string the object ID (an MD5 hash)
 	 */
 	public function getId() {

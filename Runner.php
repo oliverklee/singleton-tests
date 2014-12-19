@@ -8,9 +8,6 @@ echo 'Creating two instances via getInstance.' . chr(10);
 
 $instance1 = Singleton::getInstance();
 
-echo chr(10) . 'Sleeping for one second.' . chr(10) . chr(10);
-sleep(1);
-
 $instance2 = Singleton::getInstance();
 
 $instancesAreIdentical = $instance1 === $instance2;
@@ -28,17 +25,23 @@ unset($instance1, $instance2);
 echo 'Triggering the garbage collection.' . chr(10);
 gc_collect_cycles();
 
-echo chr(10) . 'Sleeping for one second.' . chr(10) . chr(10);
-sleep(1);
-
 echo 'Creating a new instance (even with a new name).' . chr(10);
 
 $instance3 = Singleton::getInstance();
 
 $thirdIdIsIdentical = $instance3->getId() === $id;
-$staticDataIsIdentical = Singleton::getStaticData() === $data;
-
 echo 'The new instances has ' . (!$thirdIdIsIdentical ? 'not ' : '') . 'the same ID as the first one.' . chr(10);
+
+echo 'Unsetting the new instance.' . chr(10);
+unset($instance3);
+
+echo 'Dropping the static instance.' . chr(10);
+Singleton::dropInstance();
+
+echo 'Triggering the garbage collection.' . chr(10);
+gc_collect_cycles();
+
+$staticDataIsIdentical = Singleton::getStaticData() === $data;
 echo 'The static data is ' . (!$staticDataIsIdentical ? 'not ' : '') . 'the same as before the unset.' . chr(10);
 
 $allIsIdentical = $instancesAreIdentical && $idsAreIdentical && $thirdIdIsIdentical && $staticDataIsIdentical;
